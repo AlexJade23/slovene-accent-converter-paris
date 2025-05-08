@@ -8,7 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const Index = () => {
   const [slovenianText, setSlovenianText] = useState("");
-  const converterRef = React.useRef<HTMLTextAreaElement>(null);
+  const converterRef = React.useRef<HTMLDivElement>(null);
 
   const handleSelectExample = (example: string) => {
     setSlovenianText(example);

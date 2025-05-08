@@ -1,3 +1,4 @@
+
 type PronunciationRule = {
   pattern: RegExp;
   replacement: string;
@@ -10,7 +11,7 @@ const rules: PronunciationRule[] = [
   
   // Special characters
   { pattern: /č/g, replacement: "tch" },
-  { pattern: /š/g, replacement: "ch" },
+  { pattern: /š/g, replacement: "ch" }, // Correction: š devient "ch" au lieu de "tch"
   { pattern: /ž/g, replacement: "j" },
   { pattern: /j/g, replacement: "y" },
   { pattern: /c/g, replacement: "ts" },
@@ -53,7 +54,8 @@ export const examples = [
   { slovenian: "Hvala", french: "Hva-la" },
   { slovenian: "Prosim", french: "Pro-sim" },
   { slovenian: "Kmetija", french: "K-mé-ti-ya" },
-  { slovenian: "Kolesar", french: "Ko-lé-sar" }
+  { slovenian: "Kolesar", french: "Ko-lé-sar" },
+  { slovenian: "Saša", french: "Sacha" } // Ajout de cet exemple pour démontrer la correction
 ];
 
 // Pronunciation guide for reference
