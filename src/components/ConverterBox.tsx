@@ -1,16 +1,21 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Copy, RefreshCw } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
-import { convertToPronunciation } from "@/utils/pronunciationConverter";
+import { convertToPronunciation, testConversions } from "@/utils/pronunciationConverter";
 import { useToast } from "@/components/ui/use-toast";
 
 const ConverterBox = () => {
   const [slovenian, setSlovenian] = useState("");
   const [french, setFrench] = useState("");
   const { toast } = useToast();
+
+  // Exécuter les tests de conversion au chargement
+  useEffect(() => {
+    testConversions();
+  }, []);
 
   const handleConvert = () => {
     if (!slovenian.trim()) {

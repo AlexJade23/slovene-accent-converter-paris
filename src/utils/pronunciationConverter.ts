@@ -1,41 +1,46 @@
-
 type PronunciationRule = {
   pattern: RegExp;
   replacement: string;
 };
 
+// L'ordre des règles est important: d'abord les digraphes, 
+// puis les caractères spéciaux, enfin les caractères normaux
 const rules: PronunciationRule[] = [
   // Specific digraphs (must come before single characters)
   { pattern: /lj/g, replacement: "li" },
   { pattern: /nj/g, replacement: "gn" },
   
-  // Special characters
+  // Special characters - ordre important
   { pattern: /č/g, replacement: "tch" },
-  { pattern: /š/g, replacement: "ch" }, // Correction: š devient "ch" au lieu de "tch"
+  { pattern: /š/g, replacement: "ch" },
   { pattern: /ž/g, replacement: "j" },
   { pattern: /j/g, replacement: "y" },
   { pattern: /c/g, replacement: "ts" },
   
   // Vowels with diacritics
-  { pattern: /é/g, replacement: "é" }, // keep as is, just to be explicit
+  { pattern: /é/g, replacement: "é" },
   { pattern: /ê/g, replacement: "è" },
-  { pattern: /ô/g, replacement: "ô" }, // keep as is, just to be explicit
+  { pattern: /ô/g, replacement: "ô" },
   
   // Regular vowels that need conversion
   { pattern: /u/g, replacement: "ou" },
   
   // Other consonants with specific pronunciation
-  { pattern: /r/g, replacement: "r" }, // ideally would indicate it's rolled
-  { pattern: /v/g, replacement: "v" }  // ideally would indicate it's between v and w
+  { pattern: /r/g, replacement: "r" },
+  { pattern: /v/g, replacement: "v" }
 ];
 
 export const convertToPronunciation = (text: string): string => {
   let result = text;
   
-  // Apply each rule to transform the text
+  // Appliquer chaque règle pour transformer le texte
   rules.forEach(rule => {
     result = result.replace(rule.pattern, rule.replacement);
   });
+  
+  // Débogage pour vérifier les conversions
+  console.log("Texte original:", text);
+  console.log("Texte converti:", result);
   
   return result;
 };
@@ -88,3 +93,18 @@ export const pronunciationGuide = [
     { char: "v", description: "entre \"v\" et \"w\" anglais" }
   ]}
 ];
+
+// Fonction de test pour vérifier les conversions spécifiques
+export const testConversions = () => {
+  const testCases = [
+    { input: "Saša", expected: "Sacha" },
+    { input: "Kočar", expected: "Kotchar" },
+    { input: "Ljubljana", expected: "Lioubliana" }
+  ];
+  
+  testCases.forEach(test => {
+    const result = convertToPronunciation(test.input);
+    console.log(`Test: ${test.input} => ${result} (attendu: ${test.expected})`);
+    console.log(`Résultat correct: ${result === test.expected ? "Oui" : "Non"}`);
+  });
+};
