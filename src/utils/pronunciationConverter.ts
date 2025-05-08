@@ -1,43 +1,61 @@
+
 type PronunciationRule = {
-  pattern: RegExp;
+  pattern: RegExp | string;
   replacement: string;
 };
 
-// L'ordre des règles est important: d'abord les digraphes, 
-// puis les caractères spéciaux, enfin les caractères normaux
-const rules: PronunciationRule[] = [
-  // Specific digraphs (must come before single characters)
-  { pattern: /lj/g, replacement: "li" },
-  { pattern: /nj/g, replacement: "gn" },
-  
-  // Special characters - ordre important
-  { pattern: /č/g, replacement: "tch" },
-  { pattern: /š/g, replacement: "ch" },
-  { pattern: /ž/g, replacement: "j" },
-  { pattern: /j/g, replacement: "y" },
-  { pattern: /c/g, replacement: "ts" },
-  
-  // Vowels with diacritics
-  { pattern: /é/g, replacement: "é" },
-  { pattern: /ê/g, replacement: "è" },
-  { pattern: /ô/g, replacement: "ô" },
-  
-  // Regular vowels that need conversion
-  { pattern: /u/g, replacement: "ou" },
-  
-  // Other consonants with specific pronunciation
-  { pattern: /r/g, replacement: "r" },
-  { pattern: /v/g, replacement: "v" }
-];
+// Dictionnaire de conversion pour les caractères et digraphes spéciaux
+const specialCharacters: Record<string, string> = {
+  'č': 'tch',
+  'š': 'ch',
+  'ž': 'j',
+  'lj': 'li',
+  'nj': 'gn'
+};
+
+// Dictionnaire de conversion pour les autres caractères
+const regularCharacters: Record<string, string> = {
+  'j': 'y',
+  'c': 'ts',
+  'u': 'ou',
+  'é': 'é',
+  'ê': 'è',
+  'ô': 'ô'
+};
 
 export const convertToPronunciation = (text: string): string => {
-  let result = text;
-  
-  // Appliquer chaque règle pour transformer le texte
-  rules.forEach(rule => {
-    result = result.replace(rule.pattern, rule.replacement);
-  });
-  
+  let result = '';
+  let i = 0;
+
+  // Parcourir le texte caractère par caractère
+  while (i < text.length) {
+    // Vérifier d'abord les digraphes (2 caractères)
+    if (i < text.length - 1) {
+      const digraph = text.substring(i, i + 2);
+      if (specialCharacters[digraph]) {
+        result += specialCharacters[digraph];
+        i += 2;
+        continue;
+      }
+    }
+
+    // Ensuite, vérifier les caractères spéciaux
+    const char = text[i];
+    if (specialCharacters[char]) {
+      result += specialCharacters[char];
+    } 
+    // Enfin, vérifier les caractères réguliers
+    else if (regularCharacters[char]) {
+      result += regularCharacters[char];
+    } 
+    // Sinon, conserver le caractère original
+    else {
+      result += char;
+    }
+    
+    i++;
+  }
+
   // Débogage pour vérifier les conversions
   console.log("Texte original:", text);
   console.log("Texte converti:", result);
@@ -60,8 +78,8 @@ export const examples = [
   { slovenian: "Prosim", french: "Pro-sim" },
   { slovenian: "Kmetija", french: "K-mé-ti-ya" },
   { slovenian: "Kolesar", french: "Ko-lé-sar" },
-  { slovenian: "Saša", french: "Sacha" }, // Ajout de cet exemple pour démontrer la correction
-  { slovenian: "Kočar", french: "Kotchar" } // Nouvel exemple pour démontrer la correction de č
+  { slovenian: "Saša", french: "Sacha" },
+  { slovenian: "Kočar", french: "Kotchar" }
 ];
 
 // Pronunciation guide for reference
