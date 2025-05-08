@@ -55,7 +55,8 @@ export const examples = [
   { slovenian: "Prosim", french: "Pro-sim" },
   { slovenian: "Kmetija", french: "K-mé-ti-ya" },
   { slovenian: "Kolesar", french: "Ko-lé-sar" },
-  { slovenian: "Saša", french: "Sacha" } // Ajout de cet exemple pour démontrer la correction
+  { slovenian: "Saša", french: "Sacha" }, // Ajout de cet exemple pour démontrer la correction
+  { slovenian: "Kočar", french: "Kotchar" } // Nouvel exemple pour démontrer la correction de č
 ];
 
 // Pronunciation guide for reference
